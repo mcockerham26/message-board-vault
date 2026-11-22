@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    match /users/{uid} {
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['uid', 'firstName', 'lastName', 'role', 'registrationDateTime'])
+        && request.resource.data.uid == uid && request.resource.data.role == 'member';
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow update, delete: if false;
+    }
+    match /messages/{messageId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['text', 'authorUid', 'authorName', 'createdAt', 'editedAt'])
+        && request.resource.data.authorUid == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 500
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.editedAt == null;
+      allow update: if signedIn()
+        && resource.data.authorUid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text', 'editedAt'])
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 500
+        && request.resource.data.editedAt == request.time;
+      allow delete: if signedIn() && resource.data.authorUid == request.auth.uid;
+    }
+  }
+}

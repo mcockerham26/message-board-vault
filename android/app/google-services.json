@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "706662785218",
+    "project_id": "message-board-vault-maya26",
+    "storage_bucket": "message-board-vault-maya26.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706662785218:android:c4051fe509270a45da1b5b",
+        "android_client_info": {
+          "package_name": "com.example.message_board_vault"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2qm2FRcU_IK-Cixt9BEbBLuixsXSaMU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
